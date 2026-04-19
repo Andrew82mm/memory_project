@@ -472,9 +472,33 @@ def run_cycle(self, buffer: list[Message]) -> CycleResult:
 
 **Acceptance:** после 60 снэпшотов — в директории 50 (+tagged).
 
-## 2.12. CLI refactor на typer
+## 2.12. Стратегия памяти: threshold vs tool-use
 
-**Проблема:** [main.py:125-203](main.py#L125-L203) — if-elif каскад, не тестируем.
+**Контекст:** сейчас суммаризация и извлечение KG — отдельные вызовы дешёвой модели (`MODEL_FAST`) по счётчику сообщений. Альтернатива — переложить это на главную модель через tool calling: она сама решает что и когда запомнить, прямо в процессе генерации ответа (подход MemGPT/Letta).
+
+**Trade-offs:**
+
+| | Текущий (threshold) | Tool-use (одна модель) |
+|---|---|---|
+| Стоимость | Дёшево | Дороже (~каждый запрос) |
+| Качество извлечения | Зависит от `MODEL_FAST` | Высокое (та же модель что отвечает) |
+| Триггер | Порог токенов/сообщений | Модель решает сама |
+| Предсказуемость | Высокая | Зависит от модели |
+
+**Действия в `llm_memory/config.py` и `engine.py`:**
+- [ ] Добавить `MEMORY_STRATEGY: Literal["threshold", "tool_use"] = "threshold"` в config.
+- [ ] `threshold` — текущее поведение (без изменений).
+- [ ] `tool_use` — определить инструменты `save_memory(content)`, `update_context(summary)`, `extract_fact(subject, predicate, object)` и передавать их в каждый запрос к `MODEL_SMART`. При вызове модель сама триггерит сохранение.
+- [ ] Логика выбора стратегии инкапсулирована в `summarizer.py` — `engine.py` не знает о деталях.
+
+**Acceptance:**
+- `MEMORY_STRATEGY=tool_use python main.py` — модель вызывает тулзы и факты сохраняются в граф.
+- `MEMORY_STRATEGY=threshold python main.py` — поведение идентично текущему.
+- Оба режима покрыты тестами с мокнутым LLM.
+
+## 2.13. CLI refactor на typer
+
+**Проблема:** [`cli/main.py`](llm_memory/cli/main.py) — if-elif каскад, не тестируем.
 
 **Действия в `cli/commands.py`:**
 - [ ] `typer` app с командами: `chat` (default REPL), `pin`, `edit`, `project`, `snapshots`, `rollback`, `reindex`, `tag-snapshot`, `stats`.
