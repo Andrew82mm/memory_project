@@ -1,6 +1,6 @@
 import pytest
-from llm_memory.graph.index import GraphIndex
-from llm_memory.models import Fact
+from loci.graph.index import GraphIndex
+from loci.models import Fact
 from datetime import datetime
 
 

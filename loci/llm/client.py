@@ -1,7 +1,7 @@
 import requests
 import json
-from llm_memory.config import OPENROUTER_BASE_URL, get_openrouter_key
-from llm_memory.colors import log_llm
+from loci.config import OPENROUTER_BASE_URL, get_openrouter_key
+from loci.colors import log_llm
 
 _FREE_FALLBACK = "meta-llama/llama-3-8b-instruct:free"
 

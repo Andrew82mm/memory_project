@@ -1,5 +1,5 @@
 # colors.py — ANSI-цвета для терминала
-# Использование: from llm_memory.colors import c, log
+# Использование: from loci.colors import c, log
 import sys
 
 RESET  = "\033[0m"

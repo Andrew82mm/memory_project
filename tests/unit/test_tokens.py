@@ -1,4 +1,4 @@
-from llm_memory.llm.tokens import count_tokens
+from loci.llm.tokens import count_tokens
 
 
 def test_count_tokens_returns_positive():

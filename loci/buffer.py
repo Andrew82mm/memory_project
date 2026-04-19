@@ -1,6 +1,6 @@
 from datetime import datetime
-from llm_memory.models import Message
-from llm_memory.llm.tokens import count_tokens
+from loci.models import Message
+from loci.llm.tokens import count_tokens
 
 
 class ConversationBuffer:

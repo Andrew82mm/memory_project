@@ -1,5 +1,5 @@
 import re
-from llm_memory.config import CHUNK_MAX
+from loci.config import CHUNK_MAX
 
 _HEADING_RE = re.compile(r"^(#{1,6})\s+(.+)$", re.MULTILINE)
 

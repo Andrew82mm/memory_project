@@ -1,9 +1,9 @@
 import os
 import re
-from llm_memory.llm.client import llm_client
-from llm_memory.config import MODEL_FAST
-from llm_memory.storage.filesystem import StorageManager
-from llm_memory.colors import log_knowledge, log_warn
+from loci.llm.client import llm_client
+from loci.config import MODEL_FAST
+from loci.storage.filesystem import StorageManager
+from loci.colors import log_knowledge, log_warn
 
 
 class KnowledgeGraph:

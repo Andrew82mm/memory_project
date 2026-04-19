@@ -1,7 +1,7 @@
-from llm_memory.models import CycleResult, Message
-from llm_memory.llm.client import llm_client
-from llm_memory.config import MODEL_FAST
-from llm_memory.colors import log_ok, log_warn, log_system, separator
+from loci.models import CycleResult, Message
+from loci.llm.client import llm_client
+from loci.config import MODEL_FAST
+from loci.colors import log_ok, log_warn, log_system, separator
 
 
 class SummarizationError(Exception):

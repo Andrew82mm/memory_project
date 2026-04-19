@@ -1,17 +1,17 @@
 import pytest
 from unittest.mock import MagicMock, patch
-from llm_memory.storage.filesystem import StorageManager
-import llm_memory.engine as engine_mod
+from loci.storage.filesystem import StorageManager
+import loci.engine as engine_mod
 
 
 def _engine_patches(storage):
     """Context manager that patches all heavy dependencies in MemoryEngine."""
     return (
-        patch("llm_memory.engine.StorageManager", return_value=storage),
-        patch("llm_memory.engine.RAGEngine", return_value=MagicMock(search=MagicMock(return_value=[]))),
-        patch("llm_memory.engine.KnowledgeGraph", return_value=MagicMock()),
-        patch("llm_memory.engine.GraphIndex", return_value=MagicMock()),
-        patch("llm_memory.engine.SummarizationPipeline", return_value=MagicMock()),
+        patch("loci.engine.StorageManager", return_value=storage),
+        patch("loci.engine.RAGEngine", return_value=MagicMock(search=MagicMock(return_value=[]))),
+        patch("loci.engine.KnowledgeGraph", return_value=MagicMock()),
+        patch("loci.engine.GraphIndex", return_value=MagicMock()),
+        patch("loci.engine.SummarizationPipeline", return_value=MagicMock()),
     )
 
 
@@ -20,11 +20,11 @@ def test_chat_buffer_grows(tmp_path):
     storage = StorageManager(base_path=str(tmp_path / "memory"))
 
     with (
-        patch("llm_memory.engine.StorageManager", return_value=storage),
-        patch("llm_memory.engine.RAGEngine", return_value=MagicMock(search=MagicMock(return_value=[]))),
-        patch("llm_memory.engine.KnowledgeGraph", return_value=MagicMock()),
-        patch("llm_memory.engine.GraphIndex", return_value=MagicMock()),
-        patch("llm_memory.engine.SummarizationPipeline", return_value=MagicMock()),
+        patch("loci.engine.StorageManager", return_value=storage),
+        patch("loci.engine.RAGEngine", return_value=MagicMock(search=MagicMock(return_value=[]))),
+        patch("loci.engine.KnowledgeGraph", return_value=MagicMock()),
+        patch("loci.engine.GraphIndex", return_value=MagicMock()),
+        patch("loci.engine.SummarizationPipeline", return_value=MagicMock()),
         patch.object(engine_mod.llm_client, "generate", return_value="Mock answer. References: none"),
     ):
         engine = engine_mod.MemoryEngine()
@@ -45,11 +45,11 @@ def test_summarization_triggers_at_threshold(tmp_path, monkeypatch):
     monkeypatch.setattr(engine_mod, "SUMMARIZE_TOKEN_THRESHOLD", 10)
 
     with (
-        patch("llm_memory.engine.StorageManager", return_value=storage),
-        patch("llm_memory.engine.RAGEngine", return_value=MagicMock(search=MagicMock(return_value=[]))),
-        patch("llm_memory.engine.KnowledgeGraph", return_value=MagicMock()),
-        patch("llm_memory.engine.GraphIndex", return_value=MagicMock()),
-        patch("llm_memory.engine.SummarizationPipeline", return_value=MagicMock()),
+        patch("loci.engine.StorageManager", return_value=storage),
+        patch("loci.engine.RAGEngine", return_value=MagicMock(search=MagicMock(return_value=[]))),
+        patch("loci.engine.KnowledgeGraph", return_value=MagicMock()),
+        patch("loci.engine.GraphIndex", return_value=MagicMock()),
+        patch("loci.engine.SummarizationPipeline", return_value=MagicMock()),
         patch.object(engine_mod.llm_client, "generate", return_value="Mock answer. References: none"),
     ):
         engine = engine_mod.MemoryEngine()

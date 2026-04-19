@@ -3,8 +3,8 @@ import json
 import shutil
 from datetime import datetime
 import yaml
-from llm_memory.config import MEMORY_DIR
-from llm_memory.colors import log_system, log_snapshot, log_warn
+from loci.config import MEMORY_DIR
+from loci.colors import log_system, log_snapshot, log_warn
 
 
 class StorageManager:

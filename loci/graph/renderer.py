@@ -1,4 +1,4 @@
-from llm_memory.models import Fact
+from loci.models import Fact
 
 
 def facts_to_markdown(facts: list[Fact]) -> str:

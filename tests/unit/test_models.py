@@ -1,5 +1,5 @@
 from datetime import datetime
-from llm_memory.models import Message, Fact, RetrievedChunk, Snapshot, CycleResult
+from loci.models import Message, Fact, RetrievedChunk, Snapshot, CycleResult
 
 
 def test_message_defaults():

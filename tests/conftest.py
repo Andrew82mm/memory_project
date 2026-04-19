@@ -1,5 +1,5 @@
 import pytest
-from llm_memory.storage.filesystem import StorageManager
+from loci.storage.filesystem import StorageManager
 
 
 @pytest.fixture
@@ -16,5 +16,5 @@ def mock_llm(monkeypatch):
     def fake_generate(model: str, sys_prompt: str, user_prompt: str, **kw: object) -> str:
         return responses.pop(0) if responses else "MOCK"
 
-    monkeypatch.setattr("llm_memory.llm.client.llm_client.generate", fake_generate)
+    monkeypatch.setattr("loci.llm.client.llm_client.generate", fake_generate)
     return responses

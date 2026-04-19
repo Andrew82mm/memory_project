@@ -3,7 +3,7 @@ import re
 import sqlite3
 from datetime import datetime
 from typing import Literal
-from llm_memory.models import Fact
+from loci.models import Fact
 
 
 _CREATE_SQL = """

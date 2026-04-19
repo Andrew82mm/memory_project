@@ -1,7 +1,7 @@
 import os
 import sys
-from llm_memory.engine import MemoryEngine
-from llm_memory.colors import (
+from loci.engine import MemoryEngine
+from loci.colors import (
     banner, separator, log_system, log_ok, log_warn, log_error,
     c, BRIGHT_WHITE, BRIGHT_CYAN, BRIGHT_YELLOW, BRIGHT_GREEN,
     BRIGHT_MAGENTA, DIM, BOLD, GREEN, YELLOW, CYAN, MAGENTA
@@ -96,7 +96,7 @@ def inline_editor(fname: str, engine: MemoryEngine):
 
 
 def run_cli():
-    banner("Local LLM Memory System  v0.2")
+    banner("Loci  v0.2")
     print(c(f"  Память: {os.path.abspath('project_memory')}", DIM))
     print(c("  Напишите 'help' для справки по командам.", DIM))
     separator()

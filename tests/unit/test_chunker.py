@@ -1,4 +1,4 @@
-from llm_memory.rag.chunker import chunk_markdown
+from loci.rag.chunker import chunk_markdown
 
 
 def test_three_sections_produce_three_chunks():

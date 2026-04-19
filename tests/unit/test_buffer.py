@@ -1,6 +1,6 @@
 from datetime import datetime
-from llm_memory.buffer import ConversationBuffer
-from llm_memory.models import Message
+from loci.buffer import ConversationBuffer
+from loci.models import Message
 
 
 def _msg(role: str, content: str) -> Message:

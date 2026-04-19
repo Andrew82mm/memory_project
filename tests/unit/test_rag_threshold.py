@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 
 def test_irrelevant_query_returns_empty(tmp_path):
     """Query with no relevant data should return empty list after threshold filtering."""
-    from llm_memory.storage.filesystem import StorageManager
-    from llm_memory.rag.retriever import RAGEngine
+    from loci.storage.filesystem import StorageManager
+    from loci.rag.retriever import RAGEngine
 
     storage = StorageManager(base_path=str(tmp_path / "memory"))
 
@@ -24,8 +24,8 @@ def test_irrelevant_query_returns_empty(tmp_path):
 
 def test_relevant_query_passes_threshold(tmp_path):
     """Query with very similar docs should return results."""
-    from llm_memory.storage.filesystem import StorageManager
-    from llm_memory.rag.retriever import RAGEngine
+    from loci.storage.filesystem import StorageManager
+    from loci.rag.retriever import RAGEngine
     import os
 
     storage = StorageManager(base_path=str(tmp_path / "memory"))

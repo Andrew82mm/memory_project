@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime
-from llm_memory.models import Message
-from llm_memory.summarizer import SummarizationPipeline
+from loci.models import Message
+from loci.summarizer import SummarizationPipeline
 
 
 def _msg(role: str, content: str) -> Message:
@@ -63,7 +63,7 @@ def test_summarizer_clears_buffer_on_success(fake_storage, fake_extractor, monke
     def fake_generate(model, sys_p, user_p, **kw):
         return responses.pop(0) if responses else "MOCK"
 
-    monkeypatch.setattr("llm_memory.summarizer.llm_client.generate", fake_generate)
+    monkeypatch.setattr("loci.summarizer.llm_client.generate", fake_generate)
 
     pipeline = SummarizationPipeline(fake_storage, fake_extractor)
     msgs = [_msg("user", "hi"), _msg("assistant", "hello")]
@@ -78,7 +78,7 @@ def test_summarizer_preserves_buffer_on_error_response(fake_storage, fake_extrac
     def fake_generate(model, sys_p, user_p, **kw):
         return "Error: rate limit"
 
-    monkeypatch.setattr("llm_memory.summarizer.llm_client.generate", fake_generate)
+    monkeypatch.setattr("loci.summarizer.llm_client.generate", fake_generate)
 
     pipeline = SummarizationPipeline(fake_storage, fake_extractor)
     msgs = [_msg("user", "hi")]
@@ -99,7 +99,7 @@ def test_summarizer_preserves_buffer_on_empty_summary(fake_storage, fake_extract
             return "task update"
         return ""
 
-    monkeypatch.setattr("llm_memory.summarizer.llm_client.generate", fake_generate)
+    monkeypatch.setattr("loci.summarizer.llm_client.generate", fake_generate)
 
     pipeline = SummarizationPipeline(fake_storage, fake_extractor)
     msgs = [_msg("user", "hi")]

@@ -1,12 +1,12 @@
 import os
 import json
 import math
-from llm_memory.rag.vector import VectorStore
-from llm_memory.rag.chunker import chunk_markdown
-from llm_memory.storage.filesystem import StorageManager
-from llm_memory.models import RetrievedChunk
-from llm_memory.config import MIN_SIMILARITY
-from llm_memory.colors import log_rag, log_warn
+from loci.rag.vector import VectorStore
+from loci.rag.chunker import chunk_markdown
+from loci.storage.filesystem import StorageManager
+from loci.models import RetrievedChunk
+from loci.config import MIN_SIMILARITY
+from loci.colors import log_rag, log_warn
 
 
 def _distance_to_score(distance: float) -> float:

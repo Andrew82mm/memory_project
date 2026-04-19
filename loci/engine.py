@@ -3,22 +3,22 @@ import json
 import re
 from datetime import datetime
 
-from llm_memory.config import (
+from loci.config import (
     SUMMARIZE_EVERY_N_MSG,
     SUMMARIZE_TOKEN_THRESHOLD,
     SUMMARIZE_MAX_MESSAGES,
     KEEP_RECENT_K,
     MODEL_SMART,
 )
-from llm_memory.models import Message
-from llm_memory.buffer import ConversationBuffer
-from llm_memory.summarizer import SummarizationPipeline
-from llm_memory.llm.client import llm_client
-from llm_memory.storage.filesystem import StorageManager
-from llm_memory.rag.retriever import RAGEngine
-from llm_memory.graph.extractor import KnowledgeGraph
-from llm_memory.graph.index import GraphIndex
-from llm_memory.colors import log_ok, log_warn
+from loci.models import Message
+from loci.buffer import ConversationBuffer
+from loci.summarizer import SummarizationPipeline
+from loci.llm.client import llm_client
+from loci.storage.filesystem import StorageManager
+from loci.rag.retriever import RAGEngine
+from loci.graph.extractor import KnowledgeGraph
+from loci.graph.index import GraphIndex
+from loci.colors import log_ok, log_warn
 
 
 class MemoryEngine:
