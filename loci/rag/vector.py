@@ -22,7 +22,7 @@ class VectorStore:
         self.client = chromadb.PersistentClient(path=db_path)
         self.collection = self.client.get_or_create_collection(
             name="memory_vault",
-            embedding_function=self.embedding_func,
+            embedding_function=self.embedding_func,  # type: ignore[arg-type]
         )
         self._check_model_drift()
 
@@ -47,7 +47,7 @@ class VectorStore:
         self.client.delete_collection("memory_vault")
         self.collection = self.client.get_or_create_collection(
             name="memory_vault",
-            embedding_function=self.embedding_func,
+            embedding_function=self.embedding_func,  # type: ignore[arg-type]
         )
 
     def reload_client(self) -> None:
@@ -55,11 +55,11 @@ class VectorStore:
         self.client = chromadb.PersistentClient(path=self.db_path)
         self.collection = self.client.get_or_create_collection(
             name="memory_vault",
-            embedding_function=self.embedding_func,
+            embedding_function=self.embedding_func,  # type: ignore[arg-type]
         )
 
     def upsert(self, ids: list[str], documents: list[str], metadatas: list[dict]) -> None:
-        self.collection.upsert(documents=documents, metadatas=metadatas, ids=ids)
+        self.collection.upsert(documents=documents, metadatas=metadatas, ids=ids)  # type: ignore[arg-type]
 
     def delete_by_source(self, source: str) -> None:
         try:
@@ -70,7 +70,7 @@ class VectorStore:
             pass
 
     def query(self, query_text: str, n_results: int = 5) -> dict:
-        return self.collection.query(
+        return self.collection.query(  # type: ignore[return-value]
             query_texts=[query_text],
             n_results=n_results,
             include=["distances", "metadatas", "documents"],

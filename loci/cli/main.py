@@ -89,7 +89,7 @@ def inline_editor(fname: str, engine: MemoryEngine):
           c("на отдельной строке для сохранения,", DIM),
           c("CANCEL", BOLD + BRIGHT_WHITE),
           c("для отмены.", DIM))
-    lines = []
+    lines: list[str] = []
     while True:
         try:
             line = sys.stdin.readline()

@@ -21,6 +21,8 @@ dev = [
     "pytest-cov",
     "mypy>=1.8",
     "ruff>=0.4",
+    "types-PyYAML",
+    "types-requests",
 ]
 
 [tool.pytest.ini_options]

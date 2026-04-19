@@ -143,7 +143,7 @@ class StorageManager:
         return name  # return name, not path
 
     def list_snapshots(self) -> list[dict]:
-        snaps = []
+        snaps: list[dict] = []
         snap_dir = self.paths["snapshots"]
         if not os.path.exists(snap_dir):
             return snaps
