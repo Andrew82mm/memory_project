@@ -42,8 +42,8 @@
 
 Перед каждым ответом система собирает релевантный контекст через **гибридный RAG**:
 
-1. **Векторный поиск** — ChromaDB + локальная модель `all-MiniLM-L6-v2` находит семантически близкие чанки.
-2. **Графовый обход** — для каждого найденного файла подтягиваются связанные сущности (соседи по WikiLinks).
+1. **Векторный поиск** — ChromaDB + `paraphrase-multilingual-MiniLM-L12-v2` находит семантически близкие чанки (поддерживает русский и другие языки). Нерелевантные результаты отфильтровываются по score threshold.
+2. **Графовый обход** — для каждого найденного файла подтягиваются связанные сущности через SQLite-граф.
 
 Модель всегда указывает, на какие файлы памяти она опиралась при ответе (секция `References:`).
 
@@ -96,7 +96,7 @@ make lint
 make typecheck
 ```
 
-Тесты живут в `tests/smoke/` и не требуют API-ключа (`OPENROUTER_API_KEY` не нужен).
+47 тестов (17 unit + 15 smoke + 15 integration). Не требуют API-ключа.
 
 ---
 
@@ -106,21 +106,24 @@ make typecheck
 llm_memory/               # Основной пакет
 ├── config.py             # ENV-переменные и настройки
 ├── engine.py             # MemoryEngine — оркестрация
-├── models.py             # Pydantic-схемы (Phase 1.2)
+├── models.py             # Pydantic-схемы (Message, Fact, Snapshot, ...)
+├── buffer.py             # ConversationBuffer со sliding window
+├── summarizer.py         # SummarizationPipeline (safe cycle)
 ├── colors.py             # ANSI-логгеры
 ├── storage/
-│   ├── filesystem.py     # StorageManager (файлы, снэпшоты, архив)
+│   ├── filesystem.py     # StorageManager (файлы, снэпшоты + Chroma, архив)
 │   └── base.py           # StorageBackend Protocol
 ├── graph/
 │   ├── extractor.py      # KnowledgeGraph — LLM → факты в .md
-│   ├── index.py          # SQLite relations (Phase 1.9)
+│   ├── index.py          # SQLite relations (GraphIndex)
 │   └── renderer.py       # Факты → Markdown
 ├── rag/
-│   ├── retriever.py      # RAGEngine (Chroma + graph-expansion)
-│   └── chunker.py        # Markdown-aware chunking (Phase 1.8)
+│   ├── retriever.py      # RAGEngine (Chroma + graph-expansion + score threshold)
+│   ├── vector.py         # VectorStore (Chroma wrapper)
+│   └── chunker.py        # Markdown-aware chunking (по заголовкам)
 ├── llm/
 │   ├── client.py         # OpenRouter HTTP-клиент
-│   └── tokens.py         # Token counting (Phase 1.5)
+│   └── tokens.py         # Token counting (tiktoken + fallback)
 └── cli/
     └── main.py           # REPL-точка входа
 
@@ -150,7 +153,8 @@ project_memory/
 └── _system/
     ├── task.md             # Текущая задача диалога
     ├── conversation_buffer.json
-    ├── snapshots/          # Снэпшоты для отката
+    ├── relations.db        # SQLite-граф знаний
+    ├── snapshots/          # Снэпшоты для отката (включают Chroma)
     └── chroma_db/          # Векторная БД
 ```
 
@@ -160,6 +164,6 @@ project_memory/
 
 - **LLM**: любая модель через [OpenRouter](https://openrouter.ai/) (GPT-4o, Llama, Gemini и др.)
 - **Векторная БД**: ChromaDB (локально, без сервера)
-- **Эмбеддинги**: `sentence-transformers/all-MiniLM-L6-v2` (работает оффлайн)
+- **Эмбеддинги**: `paraphrase-multilingual-MiniLM-L12-v2` (мультиязычный, работает оффлайн)
 - **Формат памяти**: `.md` + YAML frontmatter (совместимо с Obsidian)
 - **Язык**: Python 3.10+
